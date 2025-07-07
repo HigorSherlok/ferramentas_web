@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox - Ferramentas Úteis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        body.light-mode {
+            background-color: var(--light);
+            color: var(--dark);
+            --card-bg: rgba(45, 52, 54, 0.1);
+        }
+
+        header {
+            background-color: var(--primary);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--light), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        body.light-mode h1 {
+            background: linear-gradient(to right, var(--dark), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        body.light-mode .theme-toggle {
+            color: var(--dark);
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem;
+            background-color: var(--card-bg);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            border: 2px solid transparent;
+        }
+
+        .tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab.active {
+            background-color: var(--primary);
+            color: var(--light);
+            border-color: var(--secondary);
+        }
+
+        body.light-mode .tab.active {
+            color: var(--light);
+        }
+
+        .tool-container {
+            display: none;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tool-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        body.light-mode h2 {
+            color: var(--primary);
+        }
+
+        h2 i {
+            margin-right: 0.8rem;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        body.light-mode input, 
+        body.light-mode select {
+            background-color: rgba(45, 52, 54, 0.05);
+            color: var(--dark);
+            border-color: rgba(45, 52, 54, 0.1);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button i {
+            margin-right: 0.5rem;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        body.light-mode .btn-secondary {
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .output {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            word-break: break-all;
+            position: relative;
+        }
+
+        body.light-mode .output {
+            background-color: rgba(45, 52, 54, 0.05);
+        }
+
+        .output h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        body.light-mode .output h3 {
+            color: var(--primary);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            transition: var(--transition);
+        }
+
+        body.light-mode .todo-item {
+            background-color: rgba(45, 52, 54, 0.05);
+        }
+
+        .todo-item:hover {
+            transform: translateX(5px);
+        }
+
+        .todo-item.completed span {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+
+        .strength-meter {
+            margin-top: 0.5rem;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .strength-level {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .options-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .option-item input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tab {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .tool-container {
+                padding: 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        .tool-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--primary);
+            background-color: rgba(108, 92, 231, 0.1);
+            border-radius: 50%;
+            border: 5px solid var(--primary);
+            padding: 1.5rem;
+        }
+
+        body.light-mode .tool-icon {
+            background-color: rgba(108, 92, 231, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Game Toolbox</h1>
+        <p class="subtitle">Ferramentas essenciais para gamers e desenvolvedores</p>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <div class="tab-container">
+        <div class="tab active" data-tool="username-generator">
+            <i class="fas fa-user-astronaut"></i> Gerador de Usuário
+        </div>
+        <div class="tab" data-tool="todo-list">
+            <i class="fas fa-tasks"></i> TodoList
+        </div>
+        <div class="tab" data-tool="password-generator">
+            <i class="fas fa-key"></i> Gerador de Senha
+        </div>
+    </div>
+
+    <div class="tool-container active" id="username-generator">
+        <div class="card">
+            <div class="tool-icon">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+            <h2><i class="fas fa-user-astronaut"></i> Gerador de Nome de Usuário</h2>
+            <p>Crie nomes de usuário únicos para jogos e contas online.</p>
+            
+            <div class="input-group">
+                <label for="username-theme">Tema do nome:</label>
+                <select id="username-theme">
+                    <option value="fantasy">Fantasia</option>
+                    <option value="scifi">Ficção Científica</option>
+                    <option value="ninja">Ninja</option>
+                    <option value="pirate">Pirata</option>
+                    <option value="animal">Animal</option>
+                    <option value="random">Aleatório</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="username-length">Tamanho do nome:</label>
+                <input type="range" id="username-length" min="5" max="20" value="12">
+                <span id="length-value">12 caracteres</span>
+            </div>
+
+            <div class="input-group">
+                <label for="username-numbers">
+                    <input type="checkbox" id="username-numbers" checked>
+                    Incluir números
+                </label>
+            </div>
+
+            <button id="generate-username">
+                <i class="fas fa-dice"></i> Gerar Nome
+            </button>
+
+            <div class="output" id="username-output" style="display: none;">
+                <span class="copy-btn" title="Copiar">
+                    <i class="fas fa-copy"></i>
+                </span>
+                <h3>Seu novo nome de usuário:</h3>
+                <p id="username-result"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-container" id="todo-list">
+        <div class="card">
+            <div class="tool-icon">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <h2><i class="fas fa-tasks"></i> TodoList</h2>
+            <p>Organize suas tarefas e mantenha seu progresso em dia.</p>
+            
+            <div class="input-group">
+                <input type="text" id="new-todo" placeholder="Adicione uma nova tarefa...">
+                <button id="add-todo">
+                    <i class="fas fa-plus"></i> Adicionar
+                </button>
+            </div>
+
+            <div id="todos-container">
+                <div id="no-tasks" style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-tasks" style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                    <p>Nenhuma tarefa adicionada ainda</p>
+                </div>
+                <ul id="todo-list-items"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-container" id="password-generator">
+        <div class="card">
+            <div class="tool-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h2><i class="fas fa-key"></i> Gerador de Senhas Seguras</h2>
+            <p>Crie senhas fortes e seguras para proteger suas contas.</p>
+            
+            <div class="input-group">
+                <label for="password-length">Tamanho da senha:</label>
+                <input type="range" id="password-length" min="8" max="32" value="16">
+                <span id="password-length-value">16 caracteres</span>
+            </div>
+
+            <div class="options-row">
+                <div class="option-item">
+                    <input type="checkbox" id="uppercase-letters" checked>
+                    <label for="uppercase-letters">ABC (A-Z)</label>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="lowercase-letters" checked>
+                    <label for="lowercase-letters">abc (a-z)</label>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="numbers" checked>
+                    <label for="numbers">123 (0-9)</label>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="special-chars" checked>
+                    <label for="special-chars">!@# (símbolos)</label>
+                </div>
+            </div>
+
+            <button id="generate-password">
+                <i class="fas fa-key"></i> Gerar Senha
+            </button>
+
+            <div class="output" id="password-output" style="display: none;">
+                <span class="copy-btn" title="Copiar">
+                    <i class="fas fa-copy"></i>
+                </span>
+                <h3>Sua nova senha:</h3>
+                <p id="password-result"></p>
+                <div class="strength-meter">
+                    <div class="strength-level" id="password-strength"></div>
+                </div>
+                <p id="strength-text" style="margin-top: 0.5rem;"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Game Toolbox © 2023 | Ferramentas para gamers e desenvolvedores</p>
+    </footer>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Tab navigation
+        const tabs = document.querySelectorAll('.tab');
+        const toolContainers = document.querySelectorAll('.tool-container');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                toolContainers.forEach(t => t.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tool).classList.add('active');
+            });
+        });
+
+        // Username Generator
+        const usernameGenerators = {
+            fantasy: () => {
+                const prefixes = ['Shadow', 'Mystic', 'Dragon', 'Arcane', 'Phoenix', 'Storm', 'Dark', 'Blood', 'Silver', 'Moon'];
+                const suffixes = ['Slayer', 'Hunter', 'Mage', 'Warrior', 'Priest', 'King', 'Queen', 'Lord', 'Lady', 'Blade'];
+                return randomElement(prefixes) + randomElement(suffixes);
+            },
+            scifi: () => {
+                const prefixes = ['Cyber', 'Nova', 'Quantum', 'Orbit', 'Nebula', 'Proto', 'Star', 'Cosmo', 'Galaxy', 'Astro'];
+                const suffixes = ['X', 'Prime', 'Drive', 'Core', 'Byte', 'Matrix', 'Bot', 'Unit', 'Alpha', 'Omega'];
+                return randomElement(prefixes) + randomElement(suffixes);
+            },
+            ninja: () => {
+                const prefixes = ['Shadow', 'Silent', 'Ghost', 'Night', 'Stealth', 'Black', 'Red', 'Demon', 'Tiger', 'Cobra'];
+                const suffixes = ['Assassin', 'Ninja', 'Killer', 'Striker', 'Blade', 'Shinobi', 'Ronin', 'Master', 'Sensei'];
+                return randomElement(prefixes) + randomElement(suffixes);
+            },
+            pirate: () => {
+                const prefixes = ['Black', 'Red', 'Golden', 'Iron', 'Sea', 'Storm', 'Captain', 'Dread', 'Dead', 'Jolly'];
+                const suffixes = ['Beard', 'Hook', 'Jack', 'Raider', 'Corsair', 'Plank', 'Parrot', 'Cannon', 'Dagger', 'Rum'];
+                return randomElement(prefixes) + randomElement(suffixes);
+            },
+            animal: () => {
+                const adjectives = ['Fierce', 'Swift', 'Loyal', 'Majestic', 'Wild', 'Clever', 'Brave', 'Free', 'Noble', 'Gentle'];
+                const animals = ['Wolf', 'Lion', 'Eagle', 'Fox', 'Bear', 'Hawk', 'Stag', 'Falcon', 'Panther', 'Dragon'];
+                return randomElement(adjectives) + randomElement(animals);
+            },
+            random: () => {
+                const types = [this.fantasy, this.scifi, this.ninja, this.pirate, this.animal];
+                return randomElement(types)();
+            }
+        };
+
+        function randomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        const generateUsernameBtn = document.getElementById('generate-username');
+        const usernameOutput = document.getElementById('username-output');
+        const usernameResult = document.getElementById('username-result');
+        const usernameLength = document.getElementById('username-length');
+        const lengthValue = document.getElementById('length-value');
+
+        usernameLength.addEventListener('input', () => {
+            lengthValue.textContent = `${usernameLength.value} caracteres`;
+        });
+
+        generateUsernameBtn.addEventListener('click', () => {
+            const theme = document.getElementById('username-theme').value;
+            const includeNumbers = document.getElementById('username-numbers').checked;
+            
+            let username = usernameGenerators[theme]();
+            
+            // Adjust length
+            username = username.substring(0, usernameLength.value);
+            
+            // Add numbers if requested
+            if (includeNumbers) {
+                const randomNum = Math.floor(Math.random() * 1000);
+                username += randomNum.toString().padStart(3, '0');
+                username = username.substring(0, usernameLength.value);
+            }
+            
+            usernameResult.textContent = username;
+            usernameOutput.style.display = 'block';
+            
+            // Add copy functionality
+            usernameOutput.querySelector('.copy-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(username);
+                const copyBtn = usernameOutput.querySelector('.copy-btn');
+                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            });
+        });
+
+        // TodoList
+        const addTodoBtn = document.getElementById('add-todo');
+        const newTodoInput = document.getElementById('new-todo');
+        const todoList = document.getElementById('todo-list-items');
+        const noTasks = document.getElementById('no-tasks');
+
+        let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+        function renderTodos() {
+            todoList.innerHTML = '';
+            
+            if (todos.length === 0) {
+                noTasks.style.display = 'block';
+                return;
+            }
+            
+            noTasks.style.display = 'none';
+            
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                if (todo.completed) {
+                    li.classList.add('completed');
+                }
+                
+                li.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''}>
+                        <span>${todo.text}</span>
+                    </div>
+                    <div class="todo-actions">
+                        <button class="btn-danger delete-todo" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                todoList.appendChild(li);
+                
+                // Add event listeners
+                const checkbox = li.querySelector('.checkbox');
+                checkbox.addEventListener('change', () => {
+                    todos[index].completed = checkbox.checked;
+                    saveTodos();
+                    li.classList.toggle('completed', checkbox.checked);
+                });
+                
+                const deleteBtn = li.querySelector('.delete-todo');
+                deleteBtn.addEventListener('click', () => {
+                    todos.splice(index, 1);
+                    saveTodos();
+                    renderTodos();
+                });
+            });
+        }
+
+        function saveTodos() {
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        addTodoBtn.addEventListener('click', () => {
+            const text = newTodoInput.value.trim();
+            if (text) {
+                todos.push({
+                    text,
+                    completed: false
+                });
+                saveTodos();
+                newTodoInput.value = '';
+                renderTodos();
+            }
+        });
+
+        newTodoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTodoBtn.click();
+            }
+        });
+
+        renderTodos();
+
+        // Password Generator
+        const generatePasswordBtn = document.getElementById('generate-password');
+        const passwordOutput = document.getElementById('password-output');
+        const passwordResult = document.getElementById('password-result');
+        const passwordLength = document.getElementById('password-length');
+        const passwordLengthValue = document.getElementById('password-length-value');
+        const strengthMeter = document.getElementById('password-strength');
+        const strengthText = document.getElementById('strength-text');
+
+        passwordLength.addEventListener('input', () => {
+            passwordLengthValue.textContent = `${passwordLength.value} caracteres`;
+        });
+
+        generatePasswordBtn.addEventListener('click', () => {
+            const length = passwordLength.value;
+            const uppercase = document.getElementById('uppercase-letters').checked;
+            const lowercase = document.getElementById('lowercase-letters').checked;
+            const numbers = document.getElementById('numbers').checked;
+            const specialChars = document.getElementById('special-chars').checked;
+            
+            if (!uppercase && !lowercase && !numbers && !specialChars) {
+                alert('Selecione pelo menos um tipo de caractere!');
+                return;
+            }
+            
+            const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            const numberChars = '0123456789';
+            const specialCharChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            let allowedChars = '';
+            if (uppercase) allowedChars += uppercaseChars;
+            if (lowercase) allowedChars += lowercaseChars;
+            if (numbers) allowedChars += numberChars;
+            if (specialChars) allowedChars += specialCharChars;
+            
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += allowedChars[Math.floor(Math.random() * allowedChars.length)];
+            }
+            
+            passwordResult.textContent = password;
+            passwordOutput.style.display = 'block';
+            
+            // Calculate strength
+            let strength = 0;
+            if (uppercase) strength += 20;
+            if (lowercase) strength += 20;
+            if (numbers) strength += 20;
+            if (specialChars) strength += 20;
+            strength += (length - 8) * 5;
+            
+            strength = Math.min(100, strength);
+            strengthMeter.style.width = `${strength}%`;
+            
+            if (strength < 40) {
+                strengthMeter.style.backgroundColor = 'var(--danger)';
+                strengthText.textContent = 'Fraca';
+            } else if (strength < 70) {
+                strengthMeter.style.backgroundColor = 'var(--warning)';
+                strengthText.textContent = 'Média';
+            } else {
+                strengthMeter.style.backgroundColor = 'var(--success)';
+                strengthText.textContent = 'Forte';
+            }
+            
+            // Add copy functionality
+            passwordOutput.querySelector('.copy-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(password);
+                const copyBtn = passwordOutput.querySelector('.copy-btn');
+                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
+
